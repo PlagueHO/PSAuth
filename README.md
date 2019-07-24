@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1b088fb1093947fca0b1070c8b09055b)](https://app.codacy.com/app/PlagueHO/PSAuth?utm_source=github.com&utm_medium=referral&utm_content=PlagueHO/PSAuth&utm_campaign=Badge_Grade_Dashboard)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/PlagueHO/PSAuth/blob/dev/LICENSE)
 [![Documentation - PSAuth](https://img.shields.io/badge/Documentation-PSAuth-blue.svg)](https://github.com/PlagueHO/PSAuth/wiki)
 [![PowerShell Gallery - PSAuth](https://img.shields.io/badge/PowerShell%20Gallery-PSAuth-blue.svg)](https://www.powershellgallery.com/packages/PSAuth)
