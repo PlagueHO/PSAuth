@@ -17,12 +17,6 @@ jobs:
       persistCredentials: true
 
     - powershell: |
-        .\psake.ps1 -TaskList Build -Verbose
-      displayName: 'Build and Stage Module'
-      env:
-        githubRepoToken: $(githubRepoToken)
-
-    - powershell: |
         .\psake.ps1 -TaskList UnitTest -Verbose
       displayName: 'Execute Unit Tests'
 
@@ -52,6 +46,10 @@ jobs:
         testResultsFiles: '**/Integration/TestResults.integration.xml'
         testRunTitle: 'PS_Win2016_Integration'
       condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+
+    - powershell: |
+        .\psake.ps1 -TaskList Build -Verbose
+      displayName: 'Build and Stage Module'
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Module'
