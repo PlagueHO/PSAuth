@@ -19,9 +19,9 @@ Invoke-PSAuthRestMethod [-Uri] <Uri> [-OauthConsumerKey] <String>
  [-OauthConsumerSecret] <SecureString> [[-OauthAccessToken] <String>]
  [[-OauthAccessTokenSecret] <SecureString>] [[-OauthSignatureMethod] <String>]
  [[-OauthVersion] <String>] [[-OauthParameters] <Hashtable>] [[-Method] <String>]
- [[-ContentType] <String>] [[-Body] <String>] [[-Proxy] <String>]
- [[-ProxyCredential] <PSCredential>] [-ProxyUseDefaultCredentials]
- [-DisableKeepAlive] [<CommonParameters>]
+ [[-ContentType] <String>] [[-Headers] <System.Collections.IDictionary>]
+ [[-Body] <String>] [[-Proxy] <String>] [[-ProxyCredential] <PSCredential>]
+ [-ProxyUseDefaultCredentials] [-DisableKeepAlive] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -89,6 +89,22 @@ to the server to facilitate subsequent requests.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Headers
+
+Specifies the headers of the web request. Enter a hash table or dictionary.
+
+```yaml
+Type: System.Collections.IDictionary
 Parameter Sets: (All)
 Aliases:
 

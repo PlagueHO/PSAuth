@@ -1,7 +1,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/PlagueHO/PSAuth/blob/dev/LICENSE)
 [![Documentation - PSAuth](https://img.shields.io/badge/Documentation-PSAuth-blue.svg)](https://github.com/PlagueHO/PSAuth/wiki)
 [![PowerShell Gallery - PSAuth](https://img.shields.io/badge/PowerShell%20Gallery-PSAuth-blue.svg)](https://www.powershellgallery.com/packages/PSAuth)
-[![Minimum Supported PowerShell Version](https://img.shields.io/badge/PowerShell-4.0-blue.svg)](https://github.com/PlagueHO/PSAuth)
+[![Minimum Supported PowerShell Version](https://img.shields.io/badge/PowerShell-5.1-blue.svg)](https://github.com/PlagueHO/PSAuth)
 [![Minimum Supported PowerShell Core Version](https://img.shields.io/badge/PowerShell_Core-6.0-blue.svg)](https://github.com/PlagueHO/PSAuth)
 [![Wiki](https://img.shields.io/badge/Wiki-yellow.svg)](https://github.com/PlagueHO/PSAuth/Wiki)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1b088fb1093947fca0b1070c8b09055b)](https://app.codacy.com/app/PlagueHO/PSAuth?utm_source=github.com&utm_medium=referral&utm_content=PlagueHO/PSAuth&utm_campaign=Badge_Grade_Dashboard)
@@ -34,7 +34,7 @@ OAuth 1.0 authentication.
 
 This module requires the following:
 
-- Windows PowerShell 4.x and above or
+- Windows PowerShell 5.1 and above or
 - PowerShell Core 6.x on:
   - Windows
   - Linux
@@ -42,7 +42,7 @@ This module requires the following:
 
 ## Installation
 
-> If Windows Management Framework 5.0 or above is installed or the PowerShell
+> If Windows Management Framework 5.1 or above is installed or the PowerShell
 > Package management module is available:
 
 The easiest way to download and install the PSAuth module is using PowerShell
@@ -52,7 +52,7 @@ Get to download it from the PowerShell Gallery:
 Install-Module -Name PSAuth
 ```
 
-> If Windows Management Framework 5.0 or above is not available and the
+> If Windows Management Framework 5.1 or above is not available and the
 > PowerShell Package management module is not available:
 
 Unzip the file containing this Module to your `c:\Program Files\WindowsPowerShell\Modules`

@@ -55,6 +55,10 @@ function Invoke-PSAuthRestMethod
         $Body,
 
         [Parameter(Mandatory = $false)]
+        [System.Collections.IDictionary]
+        $Headers,
+
+        [Parameter(Mandatory = $false)]
         [System.String]
         $Proxy,
 
@@ -88,20 +92,7 @@ function Invoke-PSAuthRestMethod
     # Take all the parameters passed to this function and pass them to
     $invokeRestMethodParameters = @{ } + $PSBoundParameters
 
-    $headers = @{}
-
-    <#
-        If the content type is mutlipart/form-data then use a content-type header
-        that includes the content boundary.
-    #>
-    if ($ContentType -eq 'multipart/form-data')
-    {
-        $headers = @{ 'Content-Type' = ('{0}; boundary=--------------------------022142622625170180392785' -f $ContentType) }
-        $null = $invokeRestMethodParameters.Remove('ContentType')
-    }
-
     $headers += @{ 'Authorization' = $authorization }
-    $headers += @{ 'Accept' = 'application/json' }
 
     # Remove parameters that should not be passed to Invoke-RestMethod
     $null = $invokeRestMethodParameters.Remove('OauthConsumerKey')
@@ -118,7 +109,7 @@ function Invoke-PSAuthRestMethod
         $null = $invokeRestMethodParameters.Remove('Body')
     }
 
-    $null = $invokeRestMethodParameters.Add('Headers', $headers)
+    $null = $invokeRestMethodParameters['Headers'] = $headers
 
     return Invoke-RestMethod @invokeRestMethodParameters
 }
