@@ -42,13 +42,8 @@ jobs:
       condition: and(in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed'), eq(variables['System.PullRequest.IsFork'], false))
 
     - powershell: |
-        .\psake.ps1 -TaskList IntegrationTest -Parameters @{ TestStagedModule = $true } -Verbose
-      displayName: 'Execute Integration Tests on Staged Module'
-      env:
-        azureApplicationId: $(azureApplicationId)
-        azureApplicationPassword: $(azureApplicationPassword)
-        azureSubscriptionId: $(azureSubscriptionId)
-        azureTenantId: $(azureTenantId)
+        .\psake.ps1 -TaskList IntegrationTest -Verbose
+      displayName: 'Execute Integration Tests'
 
     - task: PublishTestResults@2
       displayName: 'Publish Integration Test Results'
@@ -115,11 +110,6 @@ jobs:
     - script: |
         pwsh -c '.\psake.ps1 -TaskList IntegrationTest -Verbose'
       displayName: 'Execute Integration Tests'
-      env:
-        azureApplicationId: $(azureApplicationId)
-        azureApplicationPassword: $(azureApplicationPassword)
-        azureSubscriptionId: $(azureSubscriptionId)
-        azureTenantId: $(azureTenantId)
 
     - task: PublishTestResults@2
       displayName: 'Publish Integration Test Results'
@@ -156,11 +146,6 @@ jobs:
     - script: |
         pwsh -c '.\psake.ps1 -TaskList IntegrationTest -Verbose'
       displayName: 'Execute Integration Tests'
-      env:
-        azureApplicationId: $(azureApplicationId)
-        azureApplicationPassword: $(azureApplicationPassword)
-        azureSubscriptionId: $(azureSubscriptionId)
-        azureTenantId: $(azureTenantId)
 
     - task: PublishTestResults@2
       displayName: 'Publish Integration Test Results'
