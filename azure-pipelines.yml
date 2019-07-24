@@ -61,8 +61,8 @@ jobs:
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Module'
       inputs:
-        pathtoPublish: 'staging/CosmosDB'
-        artifactName: 'CosmosDB'
+        pathtoPublish: 'staging/PSAuth'
+        artifactName: 'PSAuth'
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Module Zip'

@@ -105,7 +105,7 @@ For further examples, please see module help for individual cmdlets.
 - [Blog](http://dscottraynsford.com/)
 
 [ap-image-dev]: https://dev.azure.com/dscottraynsford/GitHub/_apis/build/status/PlagueHO.PSAuth?branchName=dev
-[ap-site-dev]: https://dev.azure.com/dscottraynsford/GitHub/_build/latest?definitionId=4
+[ap-site-dev]: https://dev.azure.com/dscottraynsford/GitHub/_build/latest?definitionId=13
 [av-image-dev]: https://ci.appveyor.com/api/projects/status/1qr3ugd0i1adnv1s/branch/dev?svg=true
 [av-site-dev]: https://ci.appveyor.com/project/PlagueHO/PSAuth/branch/dev
 [tv-image-dev]: https://travis-ci.org/PlagueHO/PSAuth.svg?branch=dev
@@ -114,7 +114,7 @@ For further examples, please see module help for individual cmdlets.
 [cc-site-dev]: https://codecov.io/gh/PlagueHO/PSAuth/branch/dev
 
 [ap-image-master]: https://dev.azure.com/dscottraynsford/GitHub/_apis/build/status/PlagueHO.PSAuth?branchName=master
-[ap-site-master]: https://dev.azure.com/dscottraynsford/GitHub/_build/latest?definitionId=4
+[ap-site-master]: https://dev.azure.com/dscottraynsford/GitHub/_build/latest?definitionId=13
 [av-image-master]: https://ci.appveyor.com/api/projects/status/1qr3ugd0i1adnv1s/branch/master?svg=true
 [av-site-master]: https://ci.appveyor.com/project/PlagueHO/PSAuth/branch/master
 [tv-image-master]: https://travis-ci.org/PlagueHO/PSAuth.svg?branch=master
