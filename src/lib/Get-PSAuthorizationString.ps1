@@ -1,6 +1,7 @@
 function Get-PSAuthorizationString
 {
     [CmdletBinding()]
+    [OutputType([System.String])]
     param
     (
         [Parameter(Mandatory = $true)]

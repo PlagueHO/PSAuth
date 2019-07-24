@@ -15,10 +15,12 @@ header.
 ## SYNTAX
 
 ```powershell
-Invoke-PSAuthRestMethod [-Uri] <Uri> [-OauthConsumerKey] <String> [-OauthConsumerSecret] <SecureString>
- [[-OauthAccessToken] <String>] [[-OauthAccessTokenSecret] <SecureString>] [[-OauthSignatureMethod] <String>]
- [[-OauthVersion] <String>] [[-OauthParameters] <Hashtable>] [[-Method] <String>] [[-ContentType] <String>]
- [[-Body] <String>] [[-Proxy] <String>] [[-ProxyCredential] <PSCredential>] [-ProxyUseDefaultCredentials]
+Invoke-PSAuthRestMethod [-Uri] <Uri> [-OauthConsumerKey] <String>
+ [-OauthConsumerSecret] <SecureString> [[-OauthAccessToken] <String>]
+ [[-OauthAccessTokenSecret] <SecureString>] [[-OauthSignatureMethod] <String>]
+ [[-OauthVersion] <String>] [[-OauthParameters] <Hashtable>] [[-Method] <String>]
+ [[-ContentType] <String>] [[-Body] <String>] [[-Proxy] <String>]
+ [[-ProxyCredential] <PSCredential>] [-ProxyUseDefaultCredentials]
  [-DisableKeepAlive] [<CommonParameters>]
 ```
 
@@ -37,7 +39,8 @@ PS C:\> Invoke-PSAuthRestMethod -Uri 'https://contoso.com/oauth2/api/get' `
     -Method 'Get'
 ```
 
-Execute Invoke-RestMethod adding an Authorization header containing an OAuth 1.0 signature.
+Execute Invoke-RestMethod adding an Authorization header containing an OAuth 1.0
+signature.
 
 ## PARAMETERS
 
@@ -130,7 +133,7 @@ Accept wildcard characters: False
 
 ### -OauthAccessTokenSecret
 
-{{ Fill OauthAccessTokenSecret Description }}
+The OAuth access token secret to use for the signature.
 
 ```yaml
 Type: System.Security.SecureString
@@ -312,6 +315,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### System.String
+
 ## NOTES
 
 ## RELATED LINKS
