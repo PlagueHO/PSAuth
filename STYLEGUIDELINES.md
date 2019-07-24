@@ -2158,7 +2158,7 @@ There is also the list of
 [Available Language Packs for Windows](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/available-language-packs-for-windows#language-packs).
 
 In each localization folder there should be a PowerShell data (.psd1) file named
-'Jenkins.strings.psd1'.
+'PSAuth.strings.psd1'.
 Each localized string file should contain the following with the correct
 localization key and accompanying localization string value (the example uses
 the friendly resource name of 'Folder').

@@ -7,16 +7,15 @@
 
 # PSAuth
 
-PowerShell module for interacting with a CloudBees PSAuth server using the
-[PSAuth Rest API](https://wiki.PSAuth-ci.org/display/PSAuth/Remote+access+API).
-Created by IAG NZ Ltd.
+PowerShell module containing functions to make HTTP requests including
+OAuth 1.0 authentication.
 
 ## Module Build Status
 
 | Branch | AzurePipelines CI | AppVeyor CI | Travis CI | Code Coverage |
 | --- | --- | --- | --- | --- |
-| dev | Comming Soon | [![av-image-dev][]][av-site-dev] | [![tv-image-dev][]][tv-site-dev] | [![cc-image-dev][]][cc-site-dev] |
-| master | Comming Soon | [![av-image-master][]][av-site-master] | [![tv-image-master][]][tv-site-master] | [![cc-image-master][]][cc-site-master] |
+| dev | [![ap-image-dev][]][ap-site-dev] | [![av-image-dev][]][av-site-dev] | [![tv-image-dev][]][tv-site-dev] | [![cc-image-dev][]][cc-site-dev] |
+| master | [![ap-image-master][]][ap-site-master] | [![av-image-master][]][av-site-master] | [![tv-image-master][]][tv-site-master] | [![cc-image-master][]][cc-site-master] |
 
 ## Table of Contents
 
@@ -80,6 +79,11 @@ This project does not currently contain any automated integration tests.
 
 ## Cmdlets
 
+- `Get-PSAuthorizationString`: Create an OAuth 1.0 Authorization string for use in
+  an HTTP request.
+- `Invoke-PSAuthRestMethod`: Execute Invoke-RestMethod including an OAuth 1.0
+  authorization header.
+
 The full details of the cmdlets contained in this module can also be
 found in the [wiki](https://github.com/PlagueHO/PSAuth/wiki).
 
@@ -100,14 +104,18 @@ For further examples, please see module help for individual cmdlets.
 - [GitHub Repository](https://github.com/PlagueHO/PSAuth/)
 - [Blog](http://dscottraynsford.com/)
 
-[av-image-dev]: https://ci.appveyor.com/api/projects/status/tp0scpm2rk0vej86/branch/dev?svg=true
+[ap-image-dev]: https://dev.azure.com/dscottraynsford/GitHub/_apis/build/status/PlagueHO.PSAuth?branchName=dev
+[ap-site-dev]: https://dev.azure.com/dscottraynsford/GitHub/_build/latest?definitionId=4
+[av-image-dev]: https://ci.appveyor.com/api/projects/status/1qr3ugd0i1adnv1s/branch/dev?svg=true
 [av-site-dev]: https://ci.appveyor.com/project/PlagueHO/PSAuth/branch/dev
 [tv-image-dev]: https://travis-ci.org/PlagueHO/PSAuth.svg?branch=dev
 [tv-site-dev]: https://travis-ci.org/PlagueHO/PSAuth/branches
 [cc-image-dev]: https://codecov.io/gh/PlagueHO/PSAuth/branch/dev/graph/badge.svg
 [cc-site-dev]: https://codecov.io/gh/PlagueHO/PSAuth/branch/dev
 
-[av-image-master]: https://ci.appveyor.com/api/projects/status/tp0scpm2rk0vej86/branch/master?svg=true
+[ap-image-master]: https://dev.azure.com/dscottraynsford/GitHub/_apis/build/status/PlagueHO.PSAuth?branchName=master
+[ap-site-master]: https://dev.azure.com/dscottraynsford/GitHub/_build/latest?definitionId=4
+[av-image-master]: https://ci.appveyor.com/api/projects/status/1qr3ugd0i1adnv1s/branch/master?svg=true
 [av-site-master]: https://ci.appveyor.com/project/PlagueHO/PSAuth/branch/master
 [tv-image-master]: https://travis-ci.org/PlagueHO/PSAuth.svg?branch=master
 [tv-site-master]: https://travis-ci.org/PlagueHO/PSAuth/branches

@@ -7,7 +7,7 @@ RootModule = 'PSAuth.psm1'
 ModuleVersion = '1.0.0.0'
 
 # Supported PSEditions
-# CompatiblePSEditions = @()
+CompatiblePSEditions = 'Core', 'Desktop'
 
 # ID used to uniquely identify this module
 GUID = 'dfb432ec-1221-4b20-a417-ba4cb63ff97f'
@@ -16,7 +16,7 @@ GUID = 'dfb432ec-1221-4b20-a417-ba4cb63ff97f'
 Author = 'Daniel Scott-Raynsford'
 
 # Company or vendor of this module
-CompanyName = ''
+CompanyName = 'None'
 
 # Copyright statement for this module
 Copyright = '(c) Daniel Scott-Raynsford. All rights reserved.'
@@ -25,7 +25,7 @@ Copyright = '(c) Daniel Scott-Raynsford. All rights reserved.'
 Description = 'PowerShell Module for working with Azure Cosmos DB databases, collections, documents, attachments, offers, users, permissions, triggers, stored procedures and user defined functions. http://dscottraynsford.com'
 
 # Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '5.0'
+PowerShellVersion = '5.1'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
@@ -62,6 +62,7 @@ PowerShellVersion = '5.0'
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
+    'Get-PSAuthorizationString'
     'Invoke-PSAuthRestMethod'
 )
 
@@ -87,21 +88,29 @@ AliasesToExport = @()
 PrivateData = @{
 
     PSData = @{
+        # Release tag
+        Prerelease = '-beta1'
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('OAuth', 'Authorization')
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/PlagueHO/PSAuth/blob/master/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/PlagueHO/PSAuth'
 
         # A URL to an icon representing this module.
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = '## What is New in IAG_Oauth Unreleased'
+        ReleaseNotes = '
+  ## What is New in PSAuth Unreleased
+
+  May 24, 2019
+
+  - Initial Version.
+  '
 
     } # End of PSData hashtable
 
