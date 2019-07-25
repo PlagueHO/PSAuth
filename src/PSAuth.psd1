@@ -4,7 +4,7 @@
 RootModule = 'PSAuth.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.0.0'
+ModuleVersion = '0.1.1.0'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Core', 'Desktop'
@@ -22,7 +22,7 @@ CompanyName = 'None'
 Copyright = '(c) Daniel Scott-Raynsford. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'PowerShell Module for working with Azure Cosmos DB databases, collections, documents, attachments, offers, users, permissions, triggers, stored procedures and user defined functions. http://dscottraynsford.com'
+Description = 'PowerShell module containing functions to make HTTP requests including OAuth 1.0 authentication.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '5.1'
