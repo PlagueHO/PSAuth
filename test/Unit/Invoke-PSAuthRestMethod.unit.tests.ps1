@@ -59,8 +59,7 @@ InModuleScope $ModuleName {
                     It 'Should call Invoke-RestMethod with expected parameters' {
                         Assert-MockCalled -CommandName Invoke-RestMethod `
                             -ParameterFilter {
-                                Write-Verbose -Message ($Headers['Authorization'] -eq 'OAuth oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_timestamp="1563952713",oauth_signature="X5wrDBIFlmxyF1rMVN3Juvp7Ncc%3D",oauth_signature_method="HMAC-SHA1",oauth_consumer_key="NotRealTestKey",oauth_version="1.0"') -Verbose;
-                            $Headers['Authorization'] -eq 'OAuth oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_timestamp="1563952713",oauth_signature="X5wrDBIFlmxyF1rMVN3Juvp7Ncc%3D",oauth_signature_method="HMAC-SHA1",oauth_consumer_key="NotRealTestKey",oauth_version="1.0"' -and `
+                            $Headers['Authorization'] -eq 'OAuth oauth_consumer_key="NotRealTestKey",oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_signature="X5wrDBIFlmxyF1rMVN3Juvp7Ncc%3D",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1563952713",oauth_version="1.0"' -and `
                                 $Method -eq 'GET' -and `
                                 $null -eq $Body
                         } `
@@ -94,7 +93,7 @@ InModuleScope $ModuleName {
                     It 'Should call Invoke-RestMethod with expected parameters' {
                         Assert-MockCalled -CommandName Invoke-RestMethod `
                             -ParameterFilter {
-                            $Headers['Authorization'] -eq 'OAuth oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_timestamp="1563952713",oauth_signature="YK95uO6uqulpjJcQX9ONMWGoU8A%3D",oauth_signature_method="HMAC-SHA1",oauth_consumer_key="NotRealTestKey",oauth_version="1.0"' -and `
+                            $Headers['Authorization'] -eq 'OAuth oauth_consumer_key="NotRealTestKey",oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_signature="YK95uO6uqulpjJcQX9ONMWGoU8A%3D",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1563952713",oauth_version="1.0"' -and `
                                 $Method -eq 'POST' -and `
                                 $Body -eq $body
                         } `
@@ -130,7 +129,7 @@ InModuleScope $ModuleName {
                     It 'Should call Invoke-RestMethod with expected parameters' {
                         Assert-MockCalled -CommandName Invoke-RestMethod `
                             -ParameterFilter {
-                            $Headers['Authorization'] -eq 'OAuth oauth_signature="EaD32gGx5EsypfUCakLUd7BGHfk%3D",oauth_version="1.0",oauth_consumer_key="NotRealTestKey",oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_token="NotRealAccessToken",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1563952713"' -and `
+                            $Headers['Authorization'] -eq 'OAuth oauth_consumer_key="NotRealTestKey",oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_signature="EaD32gGx5EsypfUCakLUd7BGHfk%3D",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1563952713",oauth_token="NotRealAccessToken",oauth_version="1.0"' -and `
                                 $Method -eq 'GET' -and `
                                 $null -eq $Body
                         } `
@@ -165,7 +164,7 @@ InModuleScope $ModuleName {
                     It 'Should call Invoke-RestMethod with expected parameters' {
                         Assert-MockCalled -CommandName Invoke-RestMethod `
                             -ParameterFilter {
-                            $Headers['Authorization'] -eq 'OAuth oauth_signature="uzFTFNxIHwAzBOQFk%2BNeBtVPD%2FU%3D",oauth_version="1.0",oauth_consumer_key="NotRealTestKey",oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_token="NotRealAccessToken",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1563952713"' -and `
+                            $Headers['Authorization'] -eq 'OAuth oauth_consumer_key="NotRealTestKey",oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_signature="uzFTFNxIHwAzBOQFk%2BNeBtVPD%2FU%3D",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1563952713",oauth_token="NotRealAccessToken",oauth_version="1.0"' -and `
                                 $Method -eq 'POST' -and `
                                 $Body -eq $body
                         } `
@@ -201,7 +200,7 @@ InModuleScope $ModuleName {
                     It 'Should call Invoke-RestMethod with expected parameters' {
                         Assert-MockCalled -CommandName Invoke-RestMethod `
                             -ParameterFilter {
-                            $Headers['Authorization'] -eq 'OAuth oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_timestamp="1563952713",oauth_signature="fCjn%2BElKq8OeAino9WZsZ%2BwRPAo%3D",oauth_signature_method="HMAC-SHA1",oauth_consumer_key="NotRealTestKey",oauth_version="1.0"' -and `
+                            $Headers['Authorization'] -eq 'OAuth oauth_consumer_key="NotRealTestKey",oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_signature="fCjn%2BElKq8OeAino9WZsZ%2BwRPAo%3D",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1563952713",oauth_version="1.0"' -and `
                                 $Method -eq 'GET' -and `
                                 $null -eq $Body
                         } `
@@ -236,7 +235,7 @@ InModuleScope $ModuleName {
                     It 'Should call Invoke-RestMethod with expected parameters' {
                         Assert-MockCalled -CommandName Invoke-RestMethod `
                             -ParameterFilter {
-                            $Headers['Authorization'] -eq 'OAuth oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_timestamp="1563952713",oauth_signature="VIMW0GV%2B6BpcBFgKJ4wRq%2B64Neg%3D",oauth_signature_method="HMAC-SHA1",oauth_consumer_key="NotRealTestKey",oauth_version="1.0"' -and `
+                            $Headers['Authorization'] -eq 'OAuth oauth_consumer_key="NotRealTestKey",oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_signature="VIMW0GV%2B6BpcBFgKJ4wRq%2B64Neg%3D",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1563952713",oauth_version="1.0"' -and `
                                 $Method -eq 'POST' -and `
                                 $Body -eq $body
                         } `
@@ -272,7 +271,7 @@ InModuleScope $ModuleName {
                     It 'Should call Invoke-RestMethod with expected parameters' {
                         Assert-MockCalled -CommandName Invoke-RestMethod `
                             -ParameterFilter {
-                            $Headers['Authorization'] -eq 'OAuth oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_timestamp="1563952713",oauth_signature="b6tms%2FOpbm2dD1vDHYqAcSFAWqwTv4puJst%2BGaN0HNg%3D",oauth_signature_method="HMAC-SHA256",oauth_consumer_key="NotRealTestKey",oauth_version="1.0"' -and `
+                            $Headers['Authorization'] -eq 'OAuth oauth_consumer_key="NotRealTestKey",oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_signature="b6tms%2FOpbm2dD1vDHYqAcSFAWqwTv4puJst%2BGaN0HNg%3D",oauth_signature_method="HMAC-SHA256",oauth_timestamp="1563952713",oauth_version="1.0"' -and `
                                 $Method -eq 'GET' -and `
                                 $null -eq $Body
                         } `
@@ -307,7 +306,7 @@ InModuleScope $ModuleName {
                     It 'Should call Invoke-RestMethod with expected parameters' {
                         Assert-MockCalled -CommandName Invoke-RestMethod `
                             -ParameterFilter {
-                            $Headers['Authorization'] -eq 'OAuth oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_timestamp="1563952713",oauth_signature="s4SL%2BpOMlOqYdVpIxXQVgNmoyqApx2dKP1UzHN6iNOo%3D",oauth_signature_method="HMAC-SHA256",oauth_consumer_key="NotRealTestKey",oauth_version="1.0"' -and `
+                            $Headers['Authorization'] -eq 'OAuth oauth_consumer_key="NotRealTestKey",oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_signature="s4SL%2BpOMlOqYdVpIxXQVgNmoyqApx2dKP1UzHN6iNOo%3D",oauth_signature_method="HMAC-SHA256",oauth_timestamp="1563952713",oauth_version="1.0"' -and `
                                 $Method -eq 'POST' -and `
                                 $Body -eq $body
                         } `

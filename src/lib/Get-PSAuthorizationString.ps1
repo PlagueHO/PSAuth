@@ -133,7 +133,8 @@ function Get-PSAuthorizationString
         $authorizationParameters += @{ oauth_token = $OauthAccessToken }
     }
 
-    $partiallySerializedAuthorizationParameters = $authorizationParameters.GetEnumerator() | Foreach-Object -Process {
+    $orderedAuthorizationParameters = $authorizationParameters.GetEnumerator() | Sort-Object -Property Name
+    $partiallySerializedAuthorizationParameters = $orderedAuthorizationParameters | Foreach-Object -Process {
         '{0}="{1}"' -f $_.Name, $_.Value
     }
     $serializedAuthorizationParameters = $partiallySerializedAuthorizationParameters -join ','
