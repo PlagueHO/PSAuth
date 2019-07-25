@@ -87,7 +87,6 @@ function Get-PSAuthorizationString
     $orderedSignatureParameters = $signatureParameters.GetEnumerator() | Sort-Object -Property Name
     $paritallySerializedSignatureParameters = $orderedSignatureParameters | Foreach-Object -Process { '{0}={1}' -f $_.Name, $_.Value }
     $serializedSignatureParameters = $paritallySerializedSignatureParameters -join '&'
-    Write-Verbose -Message $serializedSignatureParameters -Verbose
 
     # Generate the signature
     $signature = '{0}&{1}&{2}' -f $Method, [System.Uri]::EscapeDataString($normalizedUri), [System.Uri]::EscapeDataString($serializedSignatureParameters)
@@ -97,7 +96,6 @@ function Get-PSAuthorizationString
     {
         $signatureKey += [System.Uri]::EscapeDataString((ConvertFrom-PSAuthSecureString -SecureString $OauthAccessTokenSecret))
     }
-    Write-Verbose -Message $signatureKey -Verbose
 
     # Select the Signature method
     switch ($OauthSignatureMethod)
@@ -140,7 +138,6 @@ function Get-PSAuthorizationString
     $serializedAuthorizationParameters = $partiallySerializedAuthorizationParameters -join ','
     $authorizationString = 'OAuth {0}' -f $serializedAuthorizationParameters
 
-    Write-Verbose -Message $authorizationString -Verbose
     Write-Verbose -Message ($LocalizedData.AuthorizationStringGeneratedMessage -f $authorizationString.Replace($escapedOauthSignature,[System.String]::new('*',20)))
 
     return $authorizationString
