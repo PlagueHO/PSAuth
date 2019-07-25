@@ -17,14 +17,8 @@ jobs:
       persistCredentials: true
 
     - powershell: |
-        Invoke-PSDepend `
-        -Path (Get-Location) `
-        -Force `
-        -Import `
-        -Install `
-        -Tags 'Init'
-        Set-BuildEnvironment -Force
         .\psake.ps1 -TaskList UnitTest -Verbose
+        Set-BuildEnvironment -Force
       displayName: 'Execute Unit Tests'
 
     - task: PublishTestResults@2
