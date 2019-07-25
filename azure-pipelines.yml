@@ -17,6 +17,7 @@ jobs:
       persistCredentials: true
 
     - powershell: |
+        Set-BuildEnvironment -Force
         .\psake.ps1 -TaskList UnitTest -Verbose
       displayName: 'Execute Unit Tests'
 
