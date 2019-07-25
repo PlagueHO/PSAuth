@@ -59,6 +59,7 @@ InModuleScope $ModuleName {
                     It 'Should call Invoke-RestMethod with expected parameters' {
                         Assert-MockCalled -CommandName Invoke-RestMethod `
                             -ParameterFilter {
+                                Write-Verbose -Message ($Headers['Authorization'] -eq 'OAuth oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_timestamp="1563952713",oauth_signature="X5wrDBIFlmxyF1rMVN3Juvp7Ncc%3D",oauth_signature_method="HMAC-SHA1",oauth_consumer_key="NotRealTestKey",oauth_version="1.0"') -Verbose;
                             $Headers['Authorization'] -eq 'OAuth oauth_nonce="0d9ce393ab5e4a08ad20df98aa4b2c06",oauth_timestamp="1563952713",oauth_signature="X5wrDBIFlmxyF1rMVN3Juvp7Ncc%3D",oauth_signature_method="HMAC-SHA1",oauth_consumer_key="NotRealTestKey",oauth_version="1.0"' -and `
                                 $Method -eq 'GET' -and `
                                 $null -eq $Body
