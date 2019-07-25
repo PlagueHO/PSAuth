@@ -306,127 +306,155 @@ Task Build {
     $stagedReleaseNotesContent = $stagedReleaseNotesContent -replace "## What is New in $ModuleName Unreleased", "## What is New in $ModuleName $newVersion"
     Set-Content -Path $stagedReleaseNotesPath -Value $stagedReleaseNotesContent -NoNewLine -Force
 
+    # Create zip artifact
+    $zipFileFolder = Join-Path `
+        -Path $stagingFolder `
+        -ChildPath 'zip'
+
+    $null = New-Item -Path $zipFileFolder -Type directory -ErrorAction SilentlyContinue
+
+    $zipFilePath = Join-Path `
+        -Path $zipFileFolder `
+        -ChildPath "${ENV:BHProjectName}_$newVersion.zip"
+
+    if (Test-Path -Path $zipFilePath)
+    {
+        $null = Remove-Item -Path $zipFilePath
+    }
+    $null = Add-Type -assemblyname System.IO.Compression.FileSystem
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($moduleFolder, $zipFilePath)
+
+    # Update the Git Repo if this is the master branch build in VSTS
+    if ($ENV:BHBuildSystem -eq 'VSTS')
+    {
+        if ($ENV:BHBranchName -eq 'master')
+        {
+            # This is a push to master so update GitHub with release info
+            'Beginning update to master branch with deployed information'
+
+            $commitMessage = $ENV:BHCommitMessage.TrimEnd()
+            "Commit to master branch triggered with commit message: '$commitMessage'"
+
+            if ($commitMessage -match '^Azure DevOps Deploy updating Version Number to [0-9/.]*')
+            {
+                # This was a deploy commit so no need to do anything
+                'Skipping update to master branch with deployed information because this was triggered by Azure DevOps Updating the Version Number'
+            }
+            else
+            {
+                # Pull the master branch, update the readme.md and manifest
+                Set-Location -Path $ProjectRoot
+
+                Invoke-Git -GitParameters @('config', '--global', 'credential.helper', 'store')
+
+                # Configure Azure DevOps to be able to Push back to GitHub
+                Add-Content `
+                    -Path "$ENV:USERPROFILE\.git-credentials" `
+                    -Value "https://$($ENV:githubRepoToken):x-oauth-basic@github.com`n"
+
+                Invoke-Git -GitParameters @('config', '--global', 'user.email', 'plagueho@gmail.com')
+                Invoke-Git -GitParameters @('config', '--global', 'user.name', 'Daniel Scott-Raynsford')
+
+                'Display list of Git Remotes'
+                Invoke-Git -GitParameters @('remote', '-v')
+                Invoke-Git -GitParameters @('checkout', '-f', 'master')
+
+                # Replace the manifest with the one that was published
+                'Updating files changed during deployment'
+                Copy-Item `
+                    -Path $stagedManifestPath `
+                    -Destination (Join-Path -Path $ProjectRoot -ChildPath 'src') `
+                    -Force
+                Copy-Item `
+                    -Path $stagedChangeLogPath `
+                    -Destination $ProjectRoot `
+                    -Force
+                Copy-Item `
+                    -Path $stagedReleaseNotesPath `
+                    -Destination $ProjectRoot `
+                    -Force
+
+                'Adding updated module files to commit'
+                Invoke-Git -GitParameters @('add', '.')
+
+                "Creating new commit for 'Azure DevOps Deploy updating Version Number to $NewVersion'"
+                Invoke-Git -GitParameters @('commit', '-m', "Azure DevOps Deploy updating Version Number to $NewVersion")
+
+                "Adding $newVersion tag to Master"
+                Invoke-Git -GitParameters @('tag', '-a', '-m', $newVersion, $newVersion)
+
+                # Update the master branch
+                'Pushing deployment changes to Master'
+                Invoke-Git -GitParameters @('status')
+                Invoke-Git -GitParameters @('push')
+
+                # Merge the changes to the Master branch into the Dev branch
+                'Pushing deployment changes to Dev'
+                Invoke-Git -GitParameters @('checkout', '-f', 'dev')
+                Invoke-Git -GitParameters @('merge', 'origin/master')
+                Invoke-Git -GitParameters @('push')
+            }
+        }
+        else
+        {
+            "Skipping update to master branch with deployed information because branch is: '$ENV:BHBranchName'"
+        }
+    }
+    else
+    {
+        "Skipping update to master branch with deployed information because build system is: '$ENV:BHBuildSystem'"
+    }
     "`n"
 }
 
 Task Deploy -Depends Build {
     $separator
 
-    # Generate the next version by adding the build system build number to the manifest version
-    $manifestPath = Join-Path -Path $ProjectRoot -ChildPath "src/$ModuleName.psd1"
-    $newVersion = Get-NewVersionNumber `
-        -ManifestPath $manifestPath `
-        -Build $ENV:BHBuildNumber
+    # Determine the folder name for the Module
+    $moduleFolder = Join-Path -Path $ProjectRoot -ChildPath $ModuleName
 
-    # Determine the folder names for staging the module
-    $VersionFolder = Join-Path -Path $ModuleFolder -ChildPath $newVersion
+    # Install any dependencies required for the Deploy stage
+    Invoke-PSDepend `
+        -Path $PSScriptRoot `
+        -Force `
+        -Import `
+        -Install `
+        -Tags 'Deploy'
 
     # Copy the module to the PSModulePath
     $PSModulePath = ($ENV:PSModulePath -split ';')[0]
+    $destinationPath = Join-Path -Path $PSModulePath -ChildPath $ModuleName
 
-    "Copying Module to $PSModulePath"
+    "Copying Module from $moduleFolder to $destinationPath"
     Copy-Item `
-        -Path $ModuleFolder `
-        -Destination $PSModulePath `
+        -Path $moduleFolder `
+        -Destination $destinationPath `
+        -Container `
         -Recurse `
         -Force
 
-    # Create zip artifact
-    $zipFilePath = Join-Path `
-        -Path $StagingFolder `
-        -ChildPath "${ENV:BHProjectName}_${ENV:BHBuildNumber}.zip"
-    $null = Add-Type -assemblyname System.IO.Compression.FileSystem
-    [System.IO.Compression.ZipFile]::CreateFromDirectory($ModuleFolder, $zipFilePath)
+    $installedModule = Get-Module -Name $ModuleName -ListAvailable
 
-    if ($ENV:BHBuildSystem -eq 'AppVeyor')
+    $versionNumber = $installedModule.Version |
+        Sort-Object -Descending |
+        Select-Object -First 1
+
+    if (-not $versionNumber)
     {
-        # If AppVeyor, publish the deploy artefacts for debug purposes
-        "Pushing package $zipFilePath as Appveyor artifact"
-        Push-AppveyorArtifact $zipFilePath
-        Remove-Item -Path $zipFilePath -Force
-
-        <#
-            If this is a build of the Master branch and not a PR push
-            then publish the Module to the PowerShell Gallery.
-        #>
-        if ($ENV:BHBranchName -eq 'master')
-        {
-            $commitMessage = $ENV:BHCommitMessage.TrimEnd()
-            "Commit to Master branch detected with commit message: '$commitMessage'"
-
-            if ($commitMessage -match ' Deploy!$')
-            {
-                # This was a deploy commit so no need to do anything
-                'Skipping deployment because this was a commit triggered by a deployment'
-            }
-            elseif ($ENV:APPVEYOR_PULL_REQUEST_NUMBER)
-            {
-                # This is a PR so do nothing
-                'Skipping deployment because this is a Pull Request'
-            }
-            else
-            {
-                # This is a commit to Master
-                'Publishing Module to PowerShell Gallery'
-                Get-PackageProvider `
-                    -Name NuGet `
-                    -ForceBootstrap
-                Publish-Module `
-                    -Name $ModuleName `
-                    -RequiredVersion $newVersion `
-                    -NuGetApiKey $ENV:PowerShellGalleryApiKey `
-                    -Confirm:$false
-
-                # This is not a PR so deploy
-                'Beginning update to master branch with deployed information'
-
-                # Pull the master branch, update the CHANGELOG.md and manifest
-                Set-Location -Path $ProjectRoot
-                Invoke-Git -GitParameters @('config', '--global', 'credential.helper', 'store')
-
-                Add-Content `
-                    -Path "$env:USERPROFILE\.git-credentials" `
-                    -Value "https://$($env:GitHubPushFromPlagueHO):x-oauth-basic@github.com`n"
-
-                Invoke-Git -GitParameters @('config', '--global', 'user.email', 'plagueho@gmail.com')
-                Invoke-Git -GitParameters @('config', '--global', 'user.name', 'Daniel Scott-Raynsford')
-                Invoke-Git -GitParameters @('checkout', '-f', 'master')
-
-                # Replace the manifest with the one that was published
-                'Updating files changed during deployment.='
-                Copy-Item `
-                    -Path (Join-Path -Path $VersionFolder -ChildPath "$ModuleName.psd1") `
-                    -Destination (Join-Path -Path $ProjectRoot -ChildPath 'src') `
-                    -Force
-                Copy-Item `
-                    -Path (Join-Path -Path $VersionFolder -ChildPath 'CHANGELOG.MD') `
-                    -Destination $ProjectRoot `
-                    -Force
-                Copy-Item `
-                    -Path (Join-Path -Path $VersionFolder -ChildPath 'RELEASENOTES.MD') `
-                    -Destination $ProjectRoot `
-                    -Force
-
-                # Update the master branch
-                'Pushing deployment changes to Master'
-                Invoke-Git -GitParameters @('add', '.')
-                Invoke-Git -GitParameters @('commit', '-m', "$NewVersion Deploy!")
-                Invoke-Git -GitParameters @('status')
-                Invoke-Git -GitParameters @('push', 'origin', 'master')
-
-                # Create the version tag and push it
-                "Pushing $newVersion tag to Master"
-                Invoke-Git -GitParameters @('tag', '-a', $newVersion, '-m', $newVersion)
-                Invoke-Git -GitParameters @('push', 'origin', $newVersion)
-
-                # Merge the changes to the Dev branch as well
-                'Pushing deployment changes to Dev'
-                Invoke-Git -GitParameters @('checkout', '-f', 'dev')
-                Invoke-Git -GitParameters @('merge', 'master')
-                Invoke-Git -GitParameters @('push', 'origin', 'dev')
-            }
-        }
+        Throw "$ModuleName Module could not be found after copying to $PSModulePath"
     }
+
+    # This is a deploy from the staging folder
+    "Publishing $ModuleName Module version '$versionNumber' to PowerShell Gallery"
+    $null = Get-PackageProvider `
+        -Name NuGet `
+        -ForceBootstrap
+
+    Publish-Module `
+        -Name $ModuleName `
+        -RequiredVersion $versionNumber `
+        -NuGetApiKey $ENV:PowerShellGalleryApiKey `
+        -Confirm:$false
 }
 
 function Get-NewVersionNumber

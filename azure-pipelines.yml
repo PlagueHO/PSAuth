@@ -58,6 +58,12 @@ jobs:
         artifactName: 'PSAuth'
 
     - task: PublishBuildArtifacts@1
+      displayName: 'Publish Module Zip'
+      inputs:
+        pathtoPublish: 'staging/zip'
+        artifactName: 'zip'
+
+    - task: PublishBuildArtifacts@1
       displayName: 'Publish PSake File'
       inputs:
         pathtoPublish: 'psakefile.ps1'
