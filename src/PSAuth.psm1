@@ -1,5 +1,5 @@
 ﻿<#
-.EXTERNALHELP IAG_Oauth-help.xml
+.EXTERNALHELP PSAuth-help.xml
 #>
 #Requires -version 5.0
 
@@ -16,7 +16,7 @@ if (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath $PSUICulture))
 
 Import-LocalizedData `
     -BindingVariable LocalizedData `
-    -Filename 'IAG_Oauth.strings.psd1' `
+    -Filename 'PSAuth.strings.psd1' `
     -BaseDirectory $moduleRoot `
     -UICulture $culture
 #endregion
@@ -34,6 +34,3 @@ foreach ($libFile in $libFiles)
     . $libFile.Fullname
 }
 #endregion
-
-# Enable TLS1.2 support in PowerShell
-Set-PSAuthTlsSupport
