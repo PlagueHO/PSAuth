@@ -407,7 +407,7 @@ Task Build -Depends Init {
     "`n"
 }
 
-Task Deploy -Depends Build {
+Task Deploy {
     $separator
 
     # Determine the folder name for the Module
