@@ -186,7 +186,7 @@ Task IntegrationTest -Depends Init, PrepareTest {
     "`n"
 }
 
-Task Build -Depends Test {
+Task Build {
     $separator
 
     # Install any dependencies required for the Build stage
