@@ -18,7 +18,6 @@ jobs:
 
     - powershell: |
         .\psake.ps1 -TaskList UnitTest -Verbose
-        Set-BuildEnvironment -Force
       displayName: 'Execute Unit Tests'
 
     - task: PublishTestResults@2
