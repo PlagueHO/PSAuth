@@ -50,6 +50,8 @@ jobs:
     - powershell: |
         .\psake.ps1 -TaskList Build -Verbose
       displayName: 'Build and Stage Module'
+      env:
+        githubRepoToken: $(githubRepoToken)
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Module'
