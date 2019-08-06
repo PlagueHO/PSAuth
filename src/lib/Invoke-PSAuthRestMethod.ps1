@@ -78,13 +78,13 @@ function Invoke-PSAuthRestMethod
 
     $getPSAuthorizationString = @{ } + $PSBoundParameters
     @(
+        'Body'
         'ContentType'
         'DisableKeepAlive'
-        'Body'
+        'Headers'
         'Proxy'
         'ProxyCredential'
         'ProxyUseDefaultCredentials'
-        'DisableKeepAlive'
      ) | ForEach-Object -Process { $null = $getPSAuthorizationString.Remove($_) }
 
     $authorization = Get-PSAuthorizationString @getPSAuthorizationString

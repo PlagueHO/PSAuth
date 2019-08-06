@@ -4,7 +4,7 @@
 RootModule = 'PSAuth.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.1.0'
+ModuleVersion = '0.1.1.30'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Core', 'Desktop'
@@ -102,7 +102,7 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = '
-  ## What is New in PSAuth Unreleased
+  ## What is New in PSAuth 0.1.1.30
 
   May 24, 2019
 
