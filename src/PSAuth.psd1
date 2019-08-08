@@ -4,7 +4,7 @@
     RootModule           = 'PSAuth.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '0.1.2.36'
+    ModuleVersion        = '0.1.3.36'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -102,6 +102,16 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = '
+## What is New in PSAuth Unreleased
+
+August 08, 2019
+
+- Change `psakefile.ps1` to detect Azure Pipelines correctly.
+- Added PowerShell Gallery badge to `README.md`.
+- Update URL Encoding to use more modern URL encoding method
+  `[System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode()` - fixes
+  [Issue #7](https://github.com/PlagueHO/PSAuth/issues/7).
+
 ## What is New in PSAuth 0.1.2.36
 
 August 06, 2019

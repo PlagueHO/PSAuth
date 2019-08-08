@@ -89,12 +89,12 @@ function Get-PSAuthorizationString
     $serializedSignatureParameters = $paritallySerializedSignatureParameters -join '&'
 
     # Generate the signature
-    $signature = '{0}&{1}&{2}' -f $Method, [System.Uri]::EscapeDataString($normalizedUri), [System.Uri]::EscapeDataString($serializedSignatureParameters)
-    $signatureKey = '{0}&' -f [System.Uri]::EscapeDataString((ConvertFrom-PSAuthSecureString -SecureString $OauthConsumerSecret))
+    $signature = '{0}&{1}&{2}' -f $Method, [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode($normalizedUri), [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode($serializedSignatureParameters)
+    $signatureKey = '{0}&' -f [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode((ConvertFrom-PSAuthSecureString -SecureString $OauthConsumerSecret))
 
     if ($PSBoundParameters.ContainsKey('OauthAccessTokenSecret'))
     {
-        $signatureKey += [System.Uri]::EscapeDataString((ConvertFrom-PSAuthSecureString -SecureString $OauthAccessTokenSecret))
+        $signatureKey += [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode((ConvertFrom-PSAuthSecureString -SecureString $OauthAccessTokenSecret))
     }
 
     # Select the Signature method
@@ -114,11 +114,11 @@ function Get-PSAuthorizationString
 
     $signatureHashGenerator.Key = [System.Text.Encoding]::Ascii.GetBytes($signatureKey)
     $oauthSignature = [System.Convert]::ToBase64String($signatureHashGenerator.ComputeHash([System.Text.Encoding]::ASCII.GetBytes($signature)))
-    $escapedOauthSignature = [System.Uri]::EscapeDataString($oauthSignature)
+    $escapedOauthSignature = [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode($oauthSignature)
 
     # Now assemble the authorization hash table including parameters
     $authorizationParameters = @{
-        oauth_consumer_key     = [System.Uri]::EscapeDataString($OauthConsumerKey)
+        oauth_consumer_key     = [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode($OauthConsumerKey)
         oauth_nonce            = $oauthNonce
         oauth_signature        = $escapedOauthSignature
         oauth_signature_method = $OauthSignatureMethod
