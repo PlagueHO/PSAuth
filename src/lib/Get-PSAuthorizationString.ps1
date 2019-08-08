@@ -79,22 +79,28 @@ function Get-PSAuthorizationString
         foreach ($queryItem in $Uri.Query.TrimStart('?').Split('='))
         {
             $key, $value = $queryItem.split($KeyValueSeparator, 2)
-            $signatureParameters += @{ $key = $value }
+            $signatureParameters += @{
+                $key = $value
+            }
         }
     }
 
     # Serialize all the signature parameters into a string ordered by Name
     $orderedSignatureParameters = $signatureParameters.GetEnumerator() | Sort-Object -Property Name
-    $paritallySerializedSignatureParameters = $orderedSignatureParameters | Foreach-Object -Process { '{0}={1}' -f $_.Name, $_.Value }
+    $paritallySerializedSignatureParameters = $orderedSignatureParameters | Foreach-Object -Process {
+        '{0}={1}' -f $_.Name, (ConvertTo-PSUrlEncodedString -String ($_.Value))
+    }
     $serializedSignatureParameters = $paritallySerializedSignatureParameters -join '&'
 
     # Generate the signature
-    $signature = '{0}&{1}&{2}' -f $Method, [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode($normalizedUri), [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode($serializedSignatureParameters)
-    $signatureKey = '{0}&' -f [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode((ConvertFrom-PSAuthSecureString -SecureString $OauthConsumerSecret))
+    $urlEncodedNormalizedUri = ConvertTo-PSUrlEncodedString -String $normalizedUri
+    $urlEncodedSerializedSignatureParameters = ConvertTo-PSUrlEncodedString -String $serializedSignatureParameters
+    $signature = '{0}&{1}&{2}' -f $Method, $urlEncodedNormalizedUri, $urlEncodedSerializedSignatureParameters
+    $signatureKey = '{0}&' -f (ConvertTo-PSUrlEncodedString -String (ConvertFrom-PSAuthSecureString -SecureString $OauthConsumerSecret))
 
     if ($PSBoundParameters.ContainsKey('OauthAccessTokenSecret'))
     {
-        $signatureKey += [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode((ConvertFrom-PSAuthSecureString -SecureString $OauthAccessTokenSecret))
+        $signatureKey += (ConvertTo-PSUrlEncodedString -String (ConvertFrom-PSAuthSecureString -SecureString $OauthAccessTokenSecret))
     }
 
     # Select the Signature method
@@ -114,11 +120,11 @@ function Get-PSAuthorizationString
 
     $signatureHashGenerator.Key = [System.Text.Encoding]::Ascii.GetBytes($signatureKey)
     $oauthSignature = [System.Convert]::ToBase64String($signatureHashGenerator.ComputeHash([System.Text.Encoding]::ASCII.GetBytes($signature)))
-    $escapedOauthSignature = [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode($oauthSignature)
+    $escapedOauthSignature = ConvertTo-PSUrlEncodedString -String $oauthSignature
 
     # Now assemble the authorization hash table including parameters
     $authorizationParameters = @{
-        oauth_consumer_key     = [System.Web.Security.AntiXss.AntiXssEncoder]::UrlEncode($OauthConsumerKey)
+        oauth_consumer_key     = ConvertTo-PSUrlEncodedString -String $OauthConsumerKey
         oauth_nonce            = $oauthNonce
         oauth_signature        = $escapedOauthSignature
         oauth_signature_method = $OauthSignatureMethod
@@ -138,7 +144,7 @@ function Get-PSAuthorizationString
     $serializedAuthorizationParameters = $partiallySerializedAuthorizationParameters -join ','
     $authorizationString = 'OAuth {0}' -f $serializedAuthorizationParameters
 
-    Write-Verbose -Message ($LocalizedData.AuthorizationStringGeneratedMessage -f $authorizationString.Replace($escapedOauthSignature,[System.String]::new('*',20)))
+    Write-Verbose -Message ($LocalizedData.AuthorizationStringGeneratedMessage -f $authorizationString.Replace($escapedOauthSignature, [System.String]::new('*', 20)))
 
     return $authorizationString
 }
