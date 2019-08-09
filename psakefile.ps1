@@ -235,6 +235,7 @@ Task Build -Depends Init {
 
     # Assemble all the libs content into a single string
     $libFilesStringBuilder = [System.Text.StringBuilder]::new()
+
     foreach ($libFile in $libFiles)
     {
         $libContent = Get-Content -Path $libFile -Raw
@@ -251,6 +252,7 @@ Task Build -Depends Init {
     $moduleContent = Get-Content -Path $modulePath
     $moduleStringBuilder = [System.Text.StringBuilder]::new()
     $importFunctionsRegionFound = $false
+
     foreach ($moduleLine in $moduleContent)
     {
         if ($importFunctionsRegionFound)
@@ -321,8 +323,66 @@ Task Build -Depends Init {
     {
         $null = Remove-Item -Path $zipFilePath
     }
+
     $null = Add-Type -assemblyname System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::CreateFromDirectory($moduleFolder, $zipFilePath)
+
+    "`n"
+}
+
+Task Deploy -Depends Build {
+    $separator
+
+    # Determine the folder name for the Module
+    $moduleFolder = Join-Path -Path $ProjectRoot -ChildPath $ModuleName
+
+    # Determine the folder names for staging the module
+    $VersionFolder = Join-Path -Path $ModuleFolder -ChildPath $newVersion
+
+    $stagedManifestPath = Join-Path -Path $VersionFolder -ChildPath "$ModuleName.psd1"
+
+    # Install any dependencies required for the Deploy stage
+    Invoke-PSDepend `
+        -Path $PSScriptRoot `
+        -Force `
+        -Import `
+        -Install `
+        -Tags 'Deploy'
+
+    # Copy the module to the PSModulePath
+    $PSModulePath = ($ENV:PSModulePath -split ';')[0]
+    $destinationPath = Join-Path -Path $PSModulePath -ChildPath $ModuleName
+
+    "Copying Module from $moduleFolder to $destinationPath"
+    Copy-Item `
+        -Path $moduleFolder `
+        -Destination $destinationPath `
+        -Container `
+        -Recurse `
+        -Force
+
+    $installedModule = Get-Module -Name $ModuleName -ListAvailable
+
+    $versionNumber = $installedModule.Version |
+        Sort-Object -Descending |
+        Select-Object -First 1
+
+    if (-not $versionNumber)
+    {
+        Throw "$ModuleName Module could not be found after copying to $PSModulePath"
+    }
+
+    # This is a deploy from the staging folder
+    "Publishing $ModuleName Module version '$versionNumber' to PowerShell Gallery"
+    $null = Get-PackageProvider `
+        -Name NuGet `
+        -ForceBootstrap
+
+    Publish-Module `
+        -Name $ModuleName `
+        -RequiredVersion $versionNumber `
+        -NuGetApiKey $ENV:PowerShellGalleryApiKey `
+        -Confirm:$false
 
     # Update the Git Repo if this is the master branch build in Azure Pipelines
     if ($ENV:BHBuildSystem -eq 'Azure Pipelines')
@@ -404,57 +464,6 @@ Task Build -Depends Init {
     {
         "Skipping update to master branch with deployed information because build system is: '$ENV:BHBuildSystem'"
     }
-    "`n"
-}
-
-Task Deploy {
-    $separator
-
-    # Determine the folder name for the Module
-    $moduleFolder = Join-Path -Path $ProjectRoot -ChildPath $ModuleName
-
-    # Install any dependencies required for the Deploy stage
-    Invoke-PSDepend `
-        -Path $PSScriptRoot `
-        -Force `
-        -Import `
-        -Install `
-        -Tags 'Deploy'
-
-    # Copy the module to the PSModulePath
-    $PSModulePath = ($ENV:PSModulePath -split ';')[0]
-    $destinationPath = Join-Path -Path $PSModulePath -ChildPath $ModuleName
-
-    "Copying Module from $moduleFolder to $destinationPath"
-    Copy-Item `
-        -Path $moduleFolder `
-        -Destination $destinationPath `
-        -Container `
-        -Recurse `
-        -Force
-
-    $installedModule = Get-Module -Name $ModuleName -ListAvailable
-
-    $versionNumber = $installedModule.Version |
-        Sort-Object -Descending |
-        Select-Object -First 1
-
-    if (-not $versionNumber)
-    {
-        Throw "$ModuleName Module could not be found after copying to $PSModulePath"
-    }
-
-    # This is a deploy from the staging folder
-    "Publishing $ModuleName Module version '$versionNumber' to PowerShell Gallery"
-    $null = Get-PackageProvider `
-        -Name NuGet `
-        -ForceBootstrap
-
-    Publish-Module `
-        -Name $ModuleName `
-        -RequiredVersion $versionNumber `
-        -NuGetApiKey $ENV:PowerShellGalleryApiKey `
-        -Confirm:$false
 }
 
 function Get-NewVersionNumber
@@ -475,6 +484,7 @@ function Get-NewVersionNumber
     $regex = '(?<=ModuleVersion\s+=\s+'')(?<ModuleVersion>.*)(?='')'
     $matches = @([regex]::matches($manifestContent, $regex, 'IgnoreCase'))
     $version = $null
+
     if ($matches)
     {
         $version = $matches[0].Value
@@ -483,15 +493,19 @@ function Get-NewVersionNumber
     # Determine the new version number
     $versionArray = $version -split '\.'
     $newVersion = ''
-    Foreach ($ver in (0..2))
+
+    foreach ($ver in (0..2))
     {
         $sem = $versionArray[$ver]
+
         if ([String]::IsNullOrEmpty($sem))
         {
             $sem = '0'
         }
+
         $newVersion += "$sem."
     }
+
     $newVersion += $Build
     return $newVersion
 }
