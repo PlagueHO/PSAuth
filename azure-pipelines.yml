@@ -55,8 +55,6 @@ stages:
       - powershell: |
           .\psake.ps1 -TaskList Build -Verbose
         displayName: 'Build and Stage Module'
-        env:
-          githubRepoToken: $(githubRepoToken)
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Module'
@@ -173,3 +171,6 @@ stages:
       - powershell: |
           .\psake.ps1 -TaskList Publish -Verbose
         displayName: 'Publish Module to PowerShell Gallery'
+        env:
+          GithubRepoToken: $(GithubRepoToken)
+          PowerShellGalleryApiKey: $(PowerShellGalleryApiKey)

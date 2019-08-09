@@ -410,7 +410,7 @@ Task Publish -Depends Build {
                 # Configure Azure DevOps to be able to Push back to GitHub
                 Add-Content `
                     -Path "$ENV:USERPROFILE\.git-credentials" `
-                    -Value "https://$($ENV:githubRepoToken):x-oauth-basic@github.com`n"
+                    -Value "https://$($ENV:GithubRepoToken):x-oauth-basic@github.com`n"
 
                 Invoke-Git -GitParameters @('config', '--global', 'user.email', 'plagueho@gmail.com')
                 Invoke-Git -GitParameters @('config', '--global', 'user.name', 'Daniel Scott-Raynsford')
