@@ -330,7 +330,7 @@ Task Build -Depends Init {
     "`n"
 }
 
-Task Deploy -Depends Build {
+Task Publish -Depends Build {
     $separator
 
     # Determine the folder name for the Module
@@ -347,7 +347,7 @@ Task Deploy -Depends Build {
         -Force `
         -Import `
         -Install `
-        -Tags 'Deploy'
+        -Tags 'Publish'
 
     # Copy the module to the PSModulePath
     $PSModulePath = ($ENV:PSModulePath -split ';')[0]

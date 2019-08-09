@@ -159,7 +159,7 @@ stages:
           testRunTitle: 'PSCore_MacOS1013_Integration'
         condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
 
-- stage: Deploy
+- stage: Publish
   condition: and(always(), contains(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
     - job: Build_PS_Win2016
@@ -171,5 +171,5 @@ stages:
         persistCredentials: true
 
       - powershell: |
-          .\psake.ps1 -TaskList Deploy -Verbose
-        displayName: 'Deploy Module'
+          .\psake.ps1 -TaskList Publish -Verbose
+        displayName: 'Publish Module to PowerShell Gallery'
