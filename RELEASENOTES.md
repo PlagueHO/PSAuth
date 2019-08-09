@@ -1,6 +1,6 @@
 # Release Notes
 
-## What is New in PSAuth Unreleased
+## What is New in PSAuth 0.1.3.51
 
 August 09, 2019
 
