@@ -76,9 +76,9 @@ function Get-PSAuthorizationString
     # If any query string parameters are passed include these in the signature parameters
     if ($Uri.Query)
     {
-        foreach ($queryItem in $Uri.Query.TrimStart('?').Split('='))
+        foreach ($queryItem in $Uri.Query.TrimStart('?').Split('&'))
         {
-            $key, $value = $queryItem.split($KeyValueSeparator, 2)
+            $key, $value = $queryItem.split('=', 2)
             $signatureParameters += @{
                 $key = $value
             }

@@ -1,5 +1,13 @@
 # Release Notes
 
+## What is New in PSAuth Unreleased
+
+August 27, 2019
+
+- Updated Azure Pipelines CI to use multi-stage pipeline to include publish step.
+- Fix error in `Get-PSAuthorizationString` when URI contains Query String
+  parameters - fixes [Issue #14](https://github.com/PlagueHO/PSAuth/issues/14).
+
 ## What is New in PSAuth 0.1.3.51
 
 August 09, 2019
