@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Updated Azure Pipelines CI to use multi-stage pipeline to include publish step.
+- Fix error in `Get-PSAuthorizationString` when URI contains Query String
+  parameters - fixes [Issue #14](https://github.com/PlagueHO/PSAuth/issues/14).
 
 ## 0.1.3.51
 
