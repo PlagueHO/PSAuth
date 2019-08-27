@@ -339,10 +339,6 @@ Task Publish -Depends Build {
     # Determine the folder names for staging the module
     $VersionFolder = Join-Path -Path $ModuleFolder -ChildPath $newVersion
 
-    $stagedManifestPath = Join-Path -Path $VersionFolder -ChildPath "$ModuleName.psd1"
-    $stagedChangeLogPath = Join-Path -Path $VersionFolder -ChildPath 'CHANGELOG.MD'
-    $stagedReleaseNotesPath = Join-Path -Path $VersionFolder -ChildPath 'RELEASENOTES.MD'
-
     # Install any dependencies required for the Deploy stage
     Invoke-PSDepend `
         -Path $PSScriptRoot `
@@ -424,15 +420,15 @@ Task Publish -Depends Build {
                 # Replace the manifest with the one that was published
                 'Updating files changed during deployment'
                 Copy-Item `
-                    -Path $stagedManifestPath `
+                    -Path (Join-Path -Path $VersionFolder -ChildPath "$ModuleName.psd1") `
                     -Destination (Join-Path -Path $ProjectRoot -ChildPath 'src') `
                     -Force
                 Copy-Item `
-                    -Path $stagedChangeLogPath `
+                    -Path (Join-Path -Path $VersionFolder -ChildPath 'CHANGELOG.MD') `
                     -Destination $ProjectRoot `
                     -Force
                 Copy-Item `
-                    -Path $stagedReleaseNotesPath `
+                    -Path (Join-Path -Path $VersionFolder -ChildPath 'RELEASENOTES.MD') `
                     -Destination $ProjectRoot `
                     -Force
 
