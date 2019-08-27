@@ -102,7 +102,7 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = '
-## What is New in PSAuth Unreleased
+## What is New in PSAuth 0.1.4.78
 
 August 27, 2019
 
