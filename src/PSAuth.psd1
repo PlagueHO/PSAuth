@@ -4,7 +4,7 @@
     RootModule           = 'PSAuth.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '0.1.3.36'
+    ModuleVersion        = '0.1.4.51'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -103,6 +103,15 @@
             # ReleaseNotes of this module
             ReleaseNotes = '
 ## What is New in PSAuth Unreleased
+
+August 27, 2019
+
+- Updated Azure Pipelines CI to use multi-stage pipeline to include publish step.
+- Fix error in `Get-PSAuthorizationString` when URI contains Query String
+    parameters - fixes [Issue #14](https://github.com/PlagueHO/PSAuth/issues/14).
+- Added `OutFile` parameter to `Invoke-PSAuthRestMethod`.
+
+## What is New in PSAuth 0.1.3.51
 
 August 09, 2019
 

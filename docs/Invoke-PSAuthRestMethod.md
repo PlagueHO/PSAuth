@@ -21,12 +21,13 @@ Invoke-PSAuthRestMethod [-Uri] <Uri> [-OauthConsumerKey] <String>
  [[-OauthVersion] <String>] [[-OauthParameters] <Hashtable>] [[-Method] <String>]
  [[-ContentType] <String>] [[-Headers] <System.Collections.IDictionary>]
  [[-Body] <String>] [[-Proxy] <String>] [[-ProxyCredential] <PSCredential>]
- [-ProxyUseDefaultCredentials] [-DisableKeepAlive] [<CommonParameters>]
+ [-ProxyUseDefaultCredentials] [-DisableKeepAlive] [[-OutFile] <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 
-{{ Fill in the Description }}
+Executes Invoke-RestMethod but includes an OAuth 1.0 Authentication signature.
 
 ## EXAMPLES
 
@@ -111,6 +112,23 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OutFile
+
+Saves the response body in the specified output file. Enter a path and file name.
+If you omit the path, the default is the current location.
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 13
+Default value: Get
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
