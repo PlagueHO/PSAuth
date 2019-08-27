@@ -333,9 +333,6 @@ Task Build -Depends Init {
 Task Publish -Depends Build {
     $separator
 
-    # Determine the folder name for the Module
-    $moduleFolder = Join-Path -Path $ProjectRoot -ChildPath $ModuleName
-
     # Determine the folder names for staging the module
     $VersionFolder = Join-Path -Path $ModuleFolder -ChildPath $newVersion
 
