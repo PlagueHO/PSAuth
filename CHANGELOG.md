@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 0.1.4.78
 
 - Updated Azure Pipelines CI to use multi-stage pipeline to include publish step.
 - Fix error in `Get-PSAuthorizationString` when URI contains Query String
