@@ -444,13 +444,13 @@ Task Publish -Depends Build {
                 # Update the master branch
                 'Pushing deployment changes to Master'
                 Invoke-Git -GitParameters @('status')
-                Invoke-Git -GitParameters @('push')
+                Invoke-Git -GitParameters @('push','-f')
 
                 # Merge the changes to the Master branch into the Dev branch
                 'Pushing deployment changes to Dev'
                 Invoke-Git -GitParameters @('checkout', '-f', 'dev')
                 Invoke-Git -GitParameters @('merge', 'origin/master')
-                Invoke-Git -GitParameters @('push')
+                Invoke-Git -GitParameters @('push','-f')
             }
         }
         else
