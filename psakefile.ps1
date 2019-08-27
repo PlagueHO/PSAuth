@@ -333,6 +333,9 @@ Task Build -Depends Init {
 Task Publish -Depends Build {
     $separator
 
+    # Determine the new version based on the most recent staged module
+    $newVersion = ([System.Version[]] (Get-ChildItem -Path $ModuleFolder).Name | Sort-Object -Descending)[0]
+
     # Determine the folder names for staging the module
     $VersionFolder = Join-Path -Path $ModuleFolder -ChildPath $newVersion
 
