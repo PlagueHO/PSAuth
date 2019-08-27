@@ -340,6 +340,8 @@ Task Publish -Depends Build {
     $VersionFolder = Join-Path -Path $ModuleFolder -ChildPath $newVersion
 
     $stagedManifestPath = Join-Path -Path $VersionFolder -ChildPath "$ModuleName.psd1"
+    $stagedChangeLogPath = Join-Path -Path $VersionFolder -ChildPath 'CHANGELOG.MD'
+    $stagedReleaseNotesPath = Join-Path -Path $VersionFolder -ChildPath 'RELEASENOTES.MD'
 
     # Install any dependencies required for the Deploy stage
     Invoke-PSDepend `
