@@ -73,7 +73,11 @@ function Invoke-PSAuthRestMethod
 
         [Parameter(Mandatory = $false)]
         [Switch]
-        $DisableKeepAlive
+        $DisableKeepAlive,
+
+        [Parameter(Mandatory = $false)]
+        [System.String]
+        $OutFile
     )
 
     $getPSAuthorizationString = @{ } + $PSBoundParameters
@@ -85,6 +89,7 @@ function Invoke-PSAuthRestMethod
         'Proxy'
         'ProxyCredential'
         'ProxyUseDefaultCredentials'
+        'OutFile'
      ) | ForEach-Object -Process { $null = $getPSAuthorizationString.Remove($_) }
 
     $authorization = Get-PSAuthorizationString @getPSAuthorizationString
